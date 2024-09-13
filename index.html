@@ -5,50 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enciclopedia Pokémon</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: url('https://preview.redd.it/ive-been-drawing-every-pok%C3%A9mon-in-order-and-now-that-ive-v0-80ay1eu132na1.jpg?auto=webp&s=967c629e3083edaeabcdee7365399bc344566422') no-repeat center center fixed;
-            background-size: cover;
-            color: black;
-        }
-        header {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 1rem;
-            text-align: center;
-        }
-        .pokemon-card {
-            background-color: rgba(255, 255, 255, 0.8);
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            margin: 1rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .pokemon-card img {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 1rem;
-        }
-        .video-section img {
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 100%;
-            width: 560px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css"> 
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body>
     <header>
-        <h1 class="text-4xl font-bold">Enciclopedia Pokémon</h1>
-        <nav>
-            <ul class="flex justify-center list-none p-0">
-                <li class="mx-4"><a href="#types" class="text-black font-bold">Tipos</a></li>
-                <li class="mx-4"><a href="#regions" class="text-black font-bold">Regiones</a></li>
-                <li class="mx-4"><a href="#abilities" class="text-black font-bold">Habilidades</a></li>
-                <li class="mx-4"><a href="#items" class="text-black font-bold">Objetos</a></li>
-            </ul>
-        </nav>
+        <h1>Enciclopedia Pokémon</h1>
     </header>
 
     <main class="p-4">
@@ -79,54 +40,6 @@
         <audio id="clickSound" src="sonido.mp3"></audio>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            cargarListaPokemons('pokemon1');
-            cargarListaPokemons('pokemon2');
-        });
-
-        function cargarListaPokemons(selectId) {
-            fetch('https://pokeapi.co/api/v2/pokemon?limit=1000')
-                .then(response => response.json())
-                .then(data => {
-                    const selectElement = document.getElementById(selectId);
-                    data.results.forEach(pokemon => {
-                        const option = document.createElement('option');
-                        option.value = pokemon.url;
-                        option.textContent = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
-                        selectElement.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Error al cargar la lista de Pokémon:', error));
-        }
-
-        function cargarPokemon(selectId, cardId) {
-            const selectElement = document.getElementById(selectId);
-            const pokemonUrl = selectElement.value;
-            const cardElement = document.getElementById(cardId);
-
-            if (!pokemonUrl) {
-                cardElement.innerHTML = '';
-                return;
-            }
-
-            fetch(pokemonUrl)
-                .then(response => response.json())
-                .then(pokemon => {
-                    cardElement.innerHTML = `
-                        <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
-                        <h2>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h2>
-                        <p>Altura: ${(pokemon.height / 10).toFixed(1)} m</p>
-                        <p>Peso: ${(pokemon.weight / 10).toFixed(1)} kg</p>
-                        <p>Tipo: ${pokemon.types.map(type => type.type.name).join(', ')}</p>
-                    `;
-                })
-                .catch(error => console.error('Error al cargar los datos del Pokémon:', error));
-        }
-
-        function playSound() {
-            document.getElementById('clickSound').play();
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
