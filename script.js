@@ -37,6 +37,7 @@ function cargarPokemon(selectId, cardId) {
                 <p>Altura: ${(pokemon.height / 10).toFixed(1)} m</p>
                 <p>Peso: ${(pokemon.weight / 10).toFixed(1)} kg</p>
                 <p>Tipo: ${pokemon.types.map(type => type.type.name).join(', ')}</p>
+                 <p>Sexo: ${pokemon.types.map(type => type.type.name).join(', ')}</p>
             `;
         })
         .catch(error => console.error('Error al cargar los datos del Pokémon:', error));
