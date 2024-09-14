@@ -31,14 +31,24 @@ function cargarPokemon(selectId, cardId) {
     fetch(pokemonUrl)
         .then(response => response.json())
         .then(pokemon => {
-            cardElement.innerHTML = `
-                <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
-                <h2>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h2>
-                <p>Altura: ${(pokemon.height / 10).toFixed(1)} m</p>
-                <p>Peso: ${(pokemon.weight / 10).toFixed(1)} kg</p>
-                <p>Tipo: ${pokemon.types.map(type => type.type.name).join(', ')}</p>
-                <p>Altura: ${(pokemon.height / 10).toFixed(1)} m</p>
-        
+            const baseAttack = pokemon.stats.find(stat => stat.stat.name === 'attack').base_stat;
+            fetch(pokemon.species.url)
+                .then(response => response.json())
+                .then(speciesData => {
+                    const generation = speciesData.generation.name;
+                    const habitat = speciesData.habitat ? speciesData.habitat.name : 'Desconocido'; 
+                    cardElement.innerHTML = `
+                        <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
+                        <h2>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h2>
+                        <p>Altura: ${(pokemon.height / 10).toFixed(1)} m</p>
+                        <p>Peso: ${(pokemon.weight / 10).toFixed(1)} kg</p>
+                        <p>Tipo: ${pokemon.types.map(type => type.type.name).join(', ')}</p>
+                        <p>Ataque Base: ${baseAttack}</p>
+                        <p>Generación: ${generation.charAt(0).toUpperCase() + generation.slice(1)}</p>
+                        <p>Hábitat: ${habitat.charAt(0).toUpperCase() + habitat.slice(1)}</p> 
+                    `;
+                })
+                .catch(error => console.error('Error al cargar la especie del Pokémon:', error));
         })
         .catch(error => console.error('Error al cargar los datos del Pokémon:', error));
 }
